@@ -1,10 +1,14 @@
 package com.aeternal.driverservice.config;
 
+import com.aeternal.driverservice.model.EntityChange;
+import com.aeternal.driverservice.model.Log;
 import com.google.gson.*;
 import org.javers.core.diff.Diff;
 import org.javers.core.diff.changetype.ValueChange;
 import org.javers.core.json.JsonTypeAdapter;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,15 +21,8 @@ public class CustomJsonTypeAdapter implements JsonTypeAdapter<Diff> {
 
     @Override
     public JsonElement toJson(Diff diff, JsonSerializationContext jsonSerializationContext) {
-        JsonObject jsonObject = new JsonObject();
-        JsonArray jsonArray = new JsonArray();
-        diff.getChanges().forEach(change -> {
-            if (change instanceof ValueChange) {
-                jsonArray.add(buildChangeJson((ValueChange) change));
-            }
-        });
-        jsonObject.add("changes", jsonArray);
-        return jsonObject;
+        Log log = buildLog(diff);
+        return jsonSerializationContext.serialize(log);
     }
 
     @Override
@@ -33,15 +30,25 @@ public class CustomJsonTypeAdapter implements JsonTypeAdapter<Diff> {
         return Arrays.asList(Diff.class, ValueChange.class);
     }
 
-    private JsonObject buildChangeJson(ValueChange change) {
-        JsonObject changeJson = new JsonObject();
-        changeJson.addProperty("property", change.getPropertyName());
-        changeJson.add("left", serialize(change.getLeft()));
-        changeJson.add("right", serialize(change.getRight()));
-        return changeJson;
+    private Log buildLog(Diff diff) {
+        Log log = new Log();
+        List<EntityChange> changes = new ArrayList<>();
+        diff.getChanges().forEach(change -> {
+            if (change instanceof ValueChange) {
+                changes.add(buildChange((ValueChange) change));
+            }
+        });
+        log.setTimestamp(String.valueOf(LocalDateTime.now()));
+        log.setChanges(changes);
+        return log;
     }
 
-    private JsonElement serialize(Object value) {
-        return new Gson().toJsonTree(value);
+    private EntityChange buildChange(ValueChange change) {
+        EntityChange entityChange = new EntityChange();
+        entityChange.setProperty(change.getPropertyName());
+        entityChange.setLeft((String) change.getLeft());
+        entityChange.setRight((String) change.getRight());
+        return entityChange;
     }
+
 }

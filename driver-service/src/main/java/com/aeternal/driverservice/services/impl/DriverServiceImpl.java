@@ -1,9 +1,11 @@
 package com.aeternal.driverservice.services.impl;
 
 import com.aeternal.driverservice.model.Driver;
+import com.aeternal.driverservice.model.Log;
 import com.aeternal.driverservice.producer.RabbitMQProducer;
 import com.aeternal.driverservice.repositories.DriverRepository;
 import com.aeternal.driverservice.services.abs.DriverService;
+import com.google.gson.Gson;
 import org.javers.core.Javers;
 import org.javers.core.diff.Diff;
 import org.javers.core.json.JsonConverterBuilder;
@@ -35,7 +37,7 @@ public class DriverServiceImpl implements DriverService {
     public boolean saveDriver(Driver driver) {
         if (driver != null) {
             if (driver.getId() != null) {
-                String changes = driverChanges(driver.getId(), driver);
+                Log changes = driverChanges(driver.getId(), driver);
                 rabbitMQProducer.sendMessage(changes);
             }
             driverRepository.save(driver);
@@ -69,14 +71,14 @@ public class DriverServiceImpl implements DriverService {
         return driverRepository.getDriversOlderThanGivenAge(age);
     }
 
-    public String driverChanges(String id, Driver newDriver) {
+    public Log driverChanges(String id, Driver newDriver) {
         Driver oldDriver = driverRepository.findById(id).orElse(null);
         if (oldDriver != null) {
+            Gson gson = new Gson();
             Diff differences = javers.compare(oldDriver, newDriver);
-            return jsonConverterBuilder.build().toJson(differences);
+            return gson.fromJson(jsonConverterBuilder.build().toJson(differences), Log.class);
         }
         return null;
-
     }
 
 }
