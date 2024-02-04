@@ -1,8 +1,12 @@
 package com.aeternal.driverservice.services.impl;
 
 import com.aeternal.driverservice.model.Driver;
+import com.aeternal.driverservice.producer.RabbitMQProducer;
 import com.aeternal.driverservice.repositories.DriverRepository;
 import com.aeternal.driverservice.services.abs.DriverService;
+import org.javers.core.Javers;
+import org.javers.core.diff.Diff;
+import org.javers.core.json.JsonConverterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +17,27 @@ public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
 
+    private final Javers javers;
+
+    private final JsonConverterBuilder jsonConverterBuilder;
+
+    private final RabbitMQProducer rabbitMQProducer;
+
     @Autowired
-    public DriverServiceImpl(DriverRepository driverRepository) {
+    public DriverServiceImpl(DriverRepository driverRepository, Javers javers, JsonConverterBuilder jsonConverterBuilder, RabbitMQProducer rabbitMQProducer) {
         this.driverRepository = driverRepository;
+        this.javers = javers;
+        this.jsonConverterBuilder = jsonConverterBuilder;
+        this.rabbitMQProducer = rabbitMQProducer;
     }
 
     @Override
     public boolean saveDriver(Driver driver) {
         if (driver != null) {
+            if (driver.getId() != null) {
+                String changes = driverChanges(driver.getId(), driver);
+                rabbitMQProducer.sendMessage(changes);
+            }
             driverRepository.save(driver);
             return true;
         }
@@ -51,4 +68,15 @@ public class DriverServiceImpl implements DriverService {
     public List<Driver> listDriversOlderThanGivenAge(int age) {
         return driverRepository.getDriversOlderThanGivenAge(age);
     }
+
+    public String driverChanges(String id, Driver newDriver) {
+        Driver oldDriver = driverRepository.findById(id).orElse(null);
+        if (oldDriver != null) {
+            Diff differences = javers.compare(oldDriver, newDriver);
+            return jsonConverterBuilder.build().toJson(differences);
+        }
+        return null;
+
+    }
+
 }

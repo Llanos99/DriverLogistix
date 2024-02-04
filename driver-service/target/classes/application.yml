@@ -12,3 +12,11 @@ spring:
     port: 5672
     username: guest
     password: guest
+
+rabbit:
+  queue:
+    name: driver-logs
+  exchange:
+    name: driver-logs-exchange
+  routing:
+    key: driver-logs-key
