@@ -6,3 +6,5 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+../notification-service/src/main/resources/driverlogistix-dd8a1-firebase-adminsdk-umubc-1cbe963174.json
