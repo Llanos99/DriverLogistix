@@ -4,3 +4,26 @@ server:
 spring:
   application:
     name: company-ms
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/companyDB
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+rabbit:
+  queue:
+    name: company-logs
+  exchange:
+    name: company-logs-exchange
+  routing:
+    key: company-logs-key
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
