@@ -2,6 +2,7 @@ package com.aeternal.driverservice.controller;
 
 import com.aeternal.driverservice.model.Driver;
 import com.aeternal.driverservice.services.abs.DriverService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,6 +64,16 @@ public class DriverController {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(driverService.listDriversOlderThanGivenAge(age));
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/company/list")
+    public ResponseEntity<List<Driver>> listCompanyDrivers(@RequestParam(name = "companyId") String companyId) {
+        if (companyId != null) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(driverService.listCompanyDrivers(new ObjectId(companyId)));
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

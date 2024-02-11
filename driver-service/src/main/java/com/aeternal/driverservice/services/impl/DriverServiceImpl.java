@@ -6,6 +6,7 @@ import com.aeternal.driverservice.producer.RabbitMQProducer;
 import com.aeternal.driverservice.repositories.DriverRepository;
 import com.aeternal.driverservice.services.abs.DriverService;
 import com.google.gson.Gson;
+import org.bson.types.ObjectId;
 import org.javers.core.Javers;
 import org.javers.core.diff.Diff;
 import org.javers.core.json.JsonConverterBuilder;
@@ -69,6 +70,14 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public List<Driver> listDriversOlderThanGivenAge(int age) {
         return driverRepository.getDriversOlderThanGivenAge(age);
+    }
+
+    @Override
+    public List<Driver> listCompanyDrivers(ObjectId companyId) {
+        if (companyId != null) {
+            return driverRepository.getCompanyDrivers(companyId);
+        }
+        return null;
     }
 
     public Log driverChanges(String id, Driver newDriver) {

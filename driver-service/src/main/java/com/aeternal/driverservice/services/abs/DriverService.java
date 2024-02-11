@@ -1,6 +1,7 @@
 package com.aeternal.driverservice.services.abs;
 
 import com.aeternal.driverservice.model.Driver;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface DriverService {
     List<Driver> listAllDrivers();
 
     List<Driver> listDriversOlderThanGivenAge(int age);
+
+    List<Driver> listCompanyDrivers(ObjectId companyId);
 
 }

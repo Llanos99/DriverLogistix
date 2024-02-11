@@ -1,5 +1,7 @@
 package com.aeternal.companyservice.services.impl;
 
+import com.aeternal.clients.driver.DriverClient;
+import com.aeternal.clients.models.Driver;
 import com.aeternal.companyservice.model.Company;
 import com.aeternal.companyservice.model.CompanyBusiness;
 import com.aeternal.companyservice.repositories.CompanyRepository;
@@ -14,9 +16,12 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
 
+    private final DriverClient driverClient;
+
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, DriverClient driverClient) {
         this.companyRepository = companyRepository;
+        this.driverClient = driverClient;
     }
 
     @Override
@@ -40,7 +45,17 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyBusiness> listCompaniesBusinesses() {
-        return null;
+        return companyRepository.findAll()
+                .stream()
+                .map(company -> {
+                    List<Driver> companyDrivers = driverClient.listCompanyDrivers(company.getId());
+                    return CompanyBusiness
+                            .builder()
+                            .companyData(company)
+                            .companyDrivers(companyDrivers)
+                            .build();
+                })
+                .toList();
     }
 
     @Override

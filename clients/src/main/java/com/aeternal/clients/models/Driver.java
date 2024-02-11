@@ -1,5 +1,6 @@
-package com.aeternal.companyservice.model;
+package com.aeternal.clients.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
@@ -12,5 +13,8 @@ public class Driver {
     private String lastName;
 
     private int age;
+
+    @JsonIgnore
+    private Object companyId;
 
 }
