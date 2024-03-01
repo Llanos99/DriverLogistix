@@ -20,12 +20,12 @@ public class Driver {
 
     private String lastName;
 
-    private int age;
-
     private String associatedCompanyName;
 
+    private int age;
+
     private ObjectId companyId;
-    
+
     private List<Truck> trucks;
 
 }
