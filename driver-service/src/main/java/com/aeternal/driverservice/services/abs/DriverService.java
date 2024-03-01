@@ -1,5 +1,6 @@
 package com.aeternal.driverservice.services.abs;
 
+import com.aeternal.clients.models.utils.CompanySubjectExchange;
 import com.aeternal.driverservice.model.Driver;
 import org.bson.types.ObjectId;
 
@@ -18,5 +19,7 @@ public interface DriverService {
     List<Driver> listDriversOlderThanGivenAge(int age);
 
     List<Driver> listCompanyDrivers(ObjectId companyId);
+
+    void updateCompanyDrivers(CompanySubjectExchange data);
 
 }

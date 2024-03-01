@@ -1,5 +1,6 @@
 package com.aeternal.driverservice.services.impl;
 
+import com.aeternal.clients.models.utils.CompanySubjectExchange;
 import com.aeternal.driverservice.model.Driver;
 import com.aeternal.driverservice.model.Log;
 import com.aeternal.driverservice.producer.RabbitMQProducer;
@@ -10,6 +11,7 @@ import org.bson.types.ObjectId;
 import org.javers.core.Javers;
 import org.javers.core.diff.Diff;
 import org.javers.core.json.JsonConverterBuilder;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +80,16 @@ public class DriverServiceImpl implements DriverService {
             return driverRepository.getCompanyDrivers(companyId);
         }
         return null;
+    }
+
+    @Override
+    @RabbitListener(queues = "company-subject")
+    public void updateCompanyDrivers(CompanySubjectExchange data) {
+        driverRepository.getCompanyDrivers(new ObjectId(data.getCompanyId()))
+                .forEach(driver -> {
+                    driver.setAssociatedCompanyName(data.getCompanyName());
+                    driverRepository.save(driver);
+                });
     }
 
     public Log driverChanges(String id, Driver newDriver) {

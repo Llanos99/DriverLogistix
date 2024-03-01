@@ -21,6 +21,8 @@ public class Driver {
 
     private int age;
 
+    private String associatedCompanyName;
+
     @JsonIgnore
     private ObjectId companyId;
 
