@@ -1,19 +1,14 @@
-package com.aeternal.clients.models.utils;
+package com.aeternal.driverservice.model.utils;
 
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
-@RequiredArgsConstructor
 public class CompanySubjectExchange implements Serializable {
 
-    @NonNull
     private String companyId;
 
-    @NonNull
     private String companyName;
 
 }

@@ -21,22 +21,51 @@ public class RabbitMQConfig {
     @Value("${rabbit.routing.key}")
     private String queueRoutingKey;
 
-    @Bean
+    /* Queue configuration for observer design pattern */
+
+    @Value("${rabbit.subject-queue.name}")
+    private String subjectQueueName;
+
+    @Value("${rabbit.subject-exchange.name}")
+    private String subjectQueueExchange;
+
+    @Value("${rabbit.subject-routing.key}")
+    private String subjectQueueRoutingKey;
+
+    @Bean("LOG-QUEUE")
     public Queue queue() {
         return new Queue(queueName);
     }
 
-    @Bean
+    @Bean("LOG-EXCHANGE")
     public TopicExchange queueExchange() {
         return new TopicExchange(queueExchange);
     }
 
-    @Bean
+    @Bean("LOG-BINDING")
     public Binding queueBinding() {
         return BindingBuilder
                 .bind(queue())
                 .to(queueExchange())
                 .with(queueRoutingKey);
+    }
+
+    @Bean("SUBJECT-QUEUE")
+    public Queue subjectQueue() {
+        return new Queue(subjectQueueName);
+    }
+
+    @Bean("SUBJECT-EXCHANGE")
+    public TopicExchange subjectQueueExchange() {
+        return new TopicExchange(subjectQueueExchange);
+    }
+
+    @Bean("SUBJECT-BINDING")
+    public Binding subjectQueueBinding() {
+        return BindingBuilder
+                .bind(subjectQueue())
+                .to(subjectQueueExchange())
+                .with(subjectQueueRoutingKey);
     }
 
     @Bean

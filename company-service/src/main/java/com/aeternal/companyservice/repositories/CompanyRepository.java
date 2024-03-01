@@ -6,10 +6,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
+
 @Repository
 public interface CompanyRepository extends MongoRepository<Company, String> {
 
-    @Query(value = "{'id' :  ?0}", fields = "{'companyName':  true}")
-    String getCurrentCompanyNameById(ObjectId id);
+    @Query(value = "{'id' :  ?0}", fields = "{'id': false, 'companyName':  true}")
+    Company getCurrentCompanyNameById(ObjectId id);
 
 }

@@ -35,7 +35,7 @@ public class CompanyServiceImpl implements CompanyService {
             if (company.getId() != null) {
                 String companyId = company.getId();
                 String currentCompanyName = company.getCompanyName();
-                String databaseCompanyName = companyRepository.getCurrentCompanyNameById(new ObjectId(company.getId()));
+                String databaseCompanyName = companyRepository.getCurrentCompanyNameById(new ObjectId(company.getId())).getCompanyName();
                 if (!databaseCompanyName.equals(currentCompanyName)) {
                     companyProducer.sendMessage(companyId, currentCompanyName);
                 }

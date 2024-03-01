@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class CompanyProducer {
 
-    @Value("${rabbit.log-exchange.name}")
+    @Value("${rabbit.subject-exchange.name}")
     private String exchange;
 
-    @Value("${rabbit.log-routing.key}")
+    @Value("${rabbit.subject-routing.key}")
     private String routingKey;
 
     private final RabbitTemplate rabbitTemplate;

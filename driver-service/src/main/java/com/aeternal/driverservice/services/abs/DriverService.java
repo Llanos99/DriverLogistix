@@ -1,7 +1,7 @@
 package com.aeternal.driverservice.services.abs;
 
-import com.aeternal.clients.models.utils.CompanySubjectExchange;
 import com.aeternal.driverservice.model.Driver;
+import com.aeternal.driverservice.model.utils.CompanySubjectExchange;
 import org.bson.types.ObjectId;
 
 import java.util.List;

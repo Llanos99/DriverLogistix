@@ -20,6 +20,12 @@ rabbit:
     name: driver-logs-exchange
   routing:
     key: driver-logs-key
+  subject-queue:
+    name: company-subject
+  subject-exchange:
+    name: company-subject-exchange
+  subject-routing:
+    key: company-subject-key
 
 eureka:
   client:

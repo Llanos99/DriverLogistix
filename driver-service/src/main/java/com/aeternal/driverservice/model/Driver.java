@@ -23,7 +23,6 @@ public class Driver {
 
     private String associatedCompanyName;
 
-    @JsonIgnore
     private ObjectId companyId;
 
 }

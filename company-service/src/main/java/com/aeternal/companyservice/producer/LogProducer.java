@@ -11,7 +11,7 @@ public class LogProducer {
     @Value("${rabbit.subject-exchange.name}")
     private String exchange;
 
-    @Value("${rabbit.subject-routing.name}")
+    @Value("${rabbit.subject-routing.key}")
     private String routingKey;
 
     private final RabbitTemplate rabbitTemplate;

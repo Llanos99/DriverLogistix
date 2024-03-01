@@ -14,12 +14,18 @@ spring:
     password: guest
 
 rabbit:
-  queue:
+  log-queue:
     name: company-logs
-  exchange:
+  log-exchange:
     name: company-logs-exchange
-  routing:
+  log-routing:
     key: company-logs-key
+  subject-queue:
+    name: company-subject
+  subject-exchange:
+    name: company-subject-exchange
+  subject-routing:
+    key: company-subject-key
 
 eureka:
   client:

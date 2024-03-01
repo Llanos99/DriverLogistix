@@ -1,8 +1,8 @@
 package com.aeternal.driverservice.services.impl;
 
-import com.aeternal.clients.models.utils.CompanySubjectExchange;
 import com.aeternal.driverservice.model.Driver;
 import com.aeternal.driverservice.model.Log;
+import com.aeternal.driverservice.model.utils.CompanySubjectExchange;
 import com.aeternal.driverservice.producer.RabbitMQProducer;
 import com.aeternal.driverservice.repositories.DriverRepository;
 import com.aeternal.driverservice.services.abs.DriverService;
