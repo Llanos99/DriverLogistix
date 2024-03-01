@@ -1,11 +1,12 @@
 package com.aeternal.driverservice.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+
+import java.util.List;
 
 @Data
 @Document(collection = "drivers")
@@ -24,5 +25,7 @@ public class Driver {
     private String associatedCompanyName;
 
     private ObjectId companyId;
+    
+    private List<Truck> trucks;
 
 }

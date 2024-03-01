@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 import org.javers.core.Javers;
 import org.javers.core.diff.Diff;
 import org.javers.core.json.JsonConverterBuilder;
+import org.json.JSONObject;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,8 +41,9 @@ public class DriverServiceImpl implements DriverService {
     public boolean saveDriver(Driver driver) {
         if (driver != null) {
             if (driver.getId() != null) {
-                Log changes = driverChanges(driver.getId(), driver);
-                rabbitMQProducer.sendMessage(changes);
+                System.out.println(driverChanges(driver.getId(), driver));
+                //Log changes = driverChanges(driver.getId(), driver);
+                //rabbitMQProducer.sendMessage(changes);
             }
             driverRepository.save(driver);
             return true;

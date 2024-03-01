@@ -7,8 +7,8 @@ public class EntityChange {
 
     private String property;
 
-    private String left;
+    private Object left;
 
-    private String right;
+    private Object right;
 
 }
