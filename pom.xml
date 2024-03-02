@@ -19,6 +19,7 @@
     <module>notification-service</module>
     <module>clients</module>
     <module>eureka-server</module>
+    <module>entity-changes</module>
   </modules>
 
   <properties>

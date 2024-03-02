@@ -1,6 +1,6 @@
 package com.aeternal.driverservice.producer;
 
-import com.aeternal.driverservice.model.Log;
+import com.aeternal.entitychangeservice.model.Log;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,4 +23,5 @@ public class RabbitMQProducer {
     public void sendMessage(Log changes) {
         rabbitTemplate.convertAndSend(exchange, routingKey, changes);
     }
+
 }

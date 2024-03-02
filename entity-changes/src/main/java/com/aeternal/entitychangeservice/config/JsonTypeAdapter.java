@@ -1,18 +1,19 @@
-package com.aeternal.driverservice.config;
+package com.aeternal.entitychangeservice.config;
 
-import com.aeternal.driverservice.model.EntityChange;
-import com.aeternal.driverservice.model.Log;
-import com.google.gson.*;
+import com.aeternal.entitychangeservice.model.EntityChange;
+import com.aeternal.entitychangeservice.model.Log;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializationContext;
 import org.javers.core.diff.Diff;
 import org.javers.core.diff.changetype.ValueChange;
-import org.javers.core.json.JsonTypeAdapter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CustomJsonTypeAdapter implements JsonTypeAdapter<Diff> {
+public class JsonTypeAdapter implements org.javers.core.json.JsonTypeAdapter<Diff> {
 
     @Override
     public Diff fromJson(JsonElement jsonElement, JsonDeserializationContext jsonDeserializationContext) {
@@ -38,7 +39,7 @@ public class CustomJsonTypeAdapter implements JsonTypeAdapter<Diff> {
                 changes.add(buildChange((ValueChange) change));
             }
         });
-        log.setTimestamp(String.valueOf(LocalDateTime.now()));
+        log.setTimeStamp(String.valueOf(LocalDateTime.now()));
         log.setChanges(changes);
         return log;
     }
@@ -46,8 +47,8 @@ public class CustomJsonTypeAdapter implements JsonTypeAdapter<Diff> {
     private EntityChange buildChange(ValueChange change) {
         EntityChange entityChange = new EntityChange();
         entityChange.setProperty(change.getPropertyNameWithPath());
-        entityChange.setLeft(change.getLeft());
-        entityChange.setRight(change.getRight());
+        entityChange.setOldValue(change.getLeft());
+        entityChange.setNewValue(change.getRight());
         return entityChange;
     }
 

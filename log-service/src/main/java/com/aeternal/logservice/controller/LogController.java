@@ -1,6 +1,6 @@
 package com.aeternal.logservice.controller;
 
-import com.aeternal.logservice.model.Log;
+import com.aeternal.logservice.model.LogChanges;
 import com.aeternal.logservice.services.abs.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class LogController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Log>> listLogs() {
+    public ResponseEntity<List<LogChanges>> listLogs() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(logService.listLogs());

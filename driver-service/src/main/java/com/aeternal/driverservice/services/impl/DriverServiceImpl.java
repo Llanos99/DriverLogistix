@@ -1,17 +1,16 @@
 package com.aeternal.driverservice.services.impl;
 
 import com.aeternal.driverservice.model.Driver;
-import com.aeternal.driverservice.model.Log;
 import com.aeternal.driverservice.model.utils.CompanySubjectExchange;
 import com.aeternal.driverservice.producer.RabbitMQProducer;
 import com.aeternal.driverservice.repositories.DriverRepository;
 import com.aeternal.driverservice.services.abs.DriverService;
+import com.aeternal.entitychangeservice.model.Log;
 import com.google.gson.Gson;
 import org.bson.types.ObjectId;
 import org.javers.core.Javers;
 import org.javers.core.diff.Diff;
 import org.javers.core.json.JsonConverterBuilder;
-import org.json.JSONObject;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,9 +40,8 @@ public class DriverServiceImpl implements DriverService {
     public boolean saveDriver(Driver driver) {
         if (driver != null) {
             if (driver.getId() != null) {
-                System.out.println(driverChanges(driver.getId(), driver));
-                //Log changes = driverChanges(driver.getId(), driver);
-                //rabbitMQProducer.sendMessage(changes);
+                Log changes = driverChanges(driver.getId(), driver);
+                rabbitMQProducer.sendMessage(changes);
             }
             driverRepository.save(driver);
             return true;

@@ -1,6 +1,7 @@
 package com.aeternal.logservice.services.impl;
 
-import com.aeternal.logservice.model.Log;
+import com.aeternal.entitychangeservice.model.Log;
+import com.aeternal.logservice.model.LogChanges;
 import com.aeternal.logservice.repositories.LogRepository;
 import com.aeternal.logservice.services.abs.LogService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -23,12 +24,12 @@ public class LogServiceImpl implements LogService {
     @RabbitListener(queues = "${rabbit.queue.name}")
     public void saveLog(Log log) {
         if (log != null) {
-            logRepository.save(log);
+            logRepository.save(new LogChanges(log.getTimeStamp(), log.getChanges()));
         }
     }
 
     @Override
-    public List<Log> listLogs() {
+    public List<LogChanges> listLogs() {
         return logRepository.findAll();
     }
 
